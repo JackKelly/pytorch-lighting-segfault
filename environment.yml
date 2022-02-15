@@ -1,0 +1,10 @@
+name: segfault
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - matplotlib
+  - pandas
+  - pytorch
+  - cpuonly 
+  - pytorch-lightning
