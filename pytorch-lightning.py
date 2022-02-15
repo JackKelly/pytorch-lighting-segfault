@@ -10,10 +10,8 @@ import pytorch_lightning as pl
 
 
 START_DATE = pd.Timestamp("2020-01-01")
-N_PERIODS = 4
 N_EXAMPLES_PER_BATCH = 32
 N_FEATURES = 1
-SEGFAULT = True
 
 
 class MyDataset(Dataset):
@@ -43,21 +41,25 @@ class LitNeuralNetwork(pl.LightningModule):
         x, y = batch
         y_hat = self(x)
         loss = F.mse_loss(y_hat, y)
-        plot_random_data()
+        plot_data()
         return loss
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=0.001)
 
 
-def plot_random_data():
-    # Plot random data
-    fig, axes = plt.subplots(ncols=32)
+def plot_data():
+    """Plot random data."""
+    # ncols which cause segfaults: 4, 8, 16, 32
+    # ncols which don't appear to cause segfaults: 2, 3, 5, 6, 7, 9, 10
+    fig, axes = plt.subplots(ncols=16)
+    N_PERIODS = 16
+    x = pd.date_range(START_DATE, periods=N_PERIODS, freq="1T")
+    # The segfaults go away if I do:
+    x = mdates.date2num(x)
+    y = np.ones(N_PERIODS)
     for ax in axes:
-        range = pd.date_range(START_DATE, periods=N_PERIODS, freq="30 min")
-        if not SEGFAULT:
-            range = mdates.date2num(range)
-        ax.plot(range, np.random.randint(low=0, high=10, size=N_PERIODS))
+        ax.plot(x, y)
     plt.close(fig)
 
 
