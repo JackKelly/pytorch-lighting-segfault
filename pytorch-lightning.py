@@ -54,9 +54,9 @@ def plot_data():
     # ncols which don't appear to cause segfaults: 2, 3, 5, 6, 7, 9, 10
     fig, axes = plt.subplots(ncols=16)
     N_PERIODS = 16
-    x = pd.date_range(START_DATE, periods=N_PERIODS, freq="1T")
+    x = pd.date_range(START_DATE, periods=N_PERIODS, freq="30 min")
     # The segfaults go away if I do:
-    x = mdates.date2num(x)
+    # x = mdates.date2num(x)
     y = np.ones(N_PERIODS)
     for ax in axes:
         ax.plot(x, y)
