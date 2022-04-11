@@ -74,4 +74,4 @@ dataloader = DataLoader(
 
 model = LitNeuralNetwork()
 trainer = pl.Trainer()
-trainer.fit(model=model, train_dataloader=dataloader)
+trainer.fit(model=model, dataloader)
